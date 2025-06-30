@@ -12,7 +12,7 @@ using UI;
 
 namespace Game
 {
-    public class InitializerScene : SceneBase
+    public class MainScene : SceneBase
     {
         // --------------------------------------------------
         // Variables
@@ -50,19 +50,7 @@ namespace Game
         {
             _initActionList.Add(() =>
             {
-                Debug.Log($"[InitialzerScene.Register_LoadActions] Load Action Start - Scene System {_loadIndex}");
-                Owner.Scene.Init(InitDone);
-            });
-
-            _initActionList.Add(() =>
-            {
-                Debug.Log($"[InitialzerScene.Register_LoadActions] Load Action Start - UI System {_loadIndex}");
-                Owner.UI.Init(InitDone);
-            });
-
-            _initActionList.Add(() =>
-            {
-                Debug.Log($"[InitialzerScene.Register_LoadActions] Load Action Start - Scene UI Set {_loadIndex}");
+                Debug.Log($"[Initializer.Register_LoadActions] Load Action Start - Scene UI Set {_loadIndex}");
 
                 Owner.UI.ShowSceneUI<UI_Scene>($"UI_{Owner.Scene.CurrentSceneType}", (uiScene) =>
                 {
@@ -78,7 +66,7 @@ namespace Game
 
             _initActionList.Add(() =>
             {
-                Debug.Log($"[InitialzerScene.Register_LoadActions] Load Action Start - UI System {_loadIndex}");
+                Debug.Log($"[Initializer.Register_LoadActions] Load Action Start - UI System {_loadIndex}");
                 OnInit(InitDone);
             });
 
@@ -89,10 +77,7 @@ namespace Game
         private void Execute_LoadActions()
         {
             if (!_isInitialized)
-            {
                 _initActionList[_loadIndex].Invoke();
-                StartCoroutine(Co_Loading());
-            }
             else
                 OnInit();
         }
@@ -100,7 +85,7 @@ namespace Game
         private void InitDone()
         {
             _loadIndex++;
-            Debug.Log($"[InitialzerScene.Register_LoadActions] Load Action Clear {_loadIndex}");
+            Debug.Log($"[Initializer.Register_LoadActions] Load Action Clear {_loadIndex}");
 
             var sliderValue = _loadIndex / (float)_totalLoadCount;
             var progressValue = (int)(sliderValue * 100f);
@@ -108,15 +93,6 @@ namespace Game
                 _initActionList[_loadIndex].Invoke();
             else
                 _isInitialized = true;
-        }
-
-        // --------------------------------------------------
-        // Methods - Normal
-        // --------------------------------------------------
-        private IEnumerator Co_Loading()
-        {
-            yield return new WaitUntil(() => _isInitialized);
-            OnInit();
         }
     }
 }

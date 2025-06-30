@@ -77,13 +77,29 @@ namespace UI
             if (!_isInteractable)
                 return;
 
-            if (_isAnimationEnabled && _co_animation == null)
+            if (_isAnimationEnabled)
+            {
+                // 기존 애니메이션이 있다면 중지
+                if (_co_animation != null)
+                    StopCoroutine(_co_animation);
+                
                 _co_animation = StartCoroutine(Co_PointerDown());
+            }
         }
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
+            if (!_isInteractable)
+                return;
 
+            if (_isAnimationEnabled)
+            {
+                // 기존 애니메이션이 있다면 중지
+                if (_co_animation != null)
+                    StopCoroutine(_co_animation);
+                
+                _co_animation = StartCoroutine(Co_PointerUp());
+            }
         }
 
         public void OnBeginDrag(PointerEventData eventData) 
