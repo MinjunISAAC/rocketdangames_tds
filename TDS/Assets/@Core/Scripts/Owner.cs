@@ -14,6 +14,16 @@ public class Owner : MonoBehaviour
     // --------------------------------------------------
     // Core Manage Group
     // --------------------------------------------------
+    private SceneLoadSystem _sceneLoadSystem = new();
+    private ResourceSystem _resourceSystem = new();
+    private UISystem _uiSystem = new();
+
+    // --------------------------------------------------
+    // Properties
+    // --------------------------------------------------
+    public static SceneLoadSystem Scene => Instance._sceneLoadSystem;
+    public static ResourceSystem Resource => Instance._resourceSystem;
+    public static UISystem UI => Instance._uiSystem;
 
     // --------------------------------------------------
     // Properties
@@ -80,6 +90,6 @@ public class Owner : MonoBehaviour
 
     private static void InitForce()
     {
-        
+
     }
 }

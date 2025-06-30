@@ -124,8 +124,6 @@ namespace UI
             
         }
 
-
-
         // --------------------------------------------------
         // Functions - Coroutine
         // --------------------------------------------------
@@ -159,7 +157,7 @@ namespace UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            throw new NotImplementedException();
+            Press();
         }
     }
 

@@ -23,21 +23,9 @@ namespace UI
         // --------------------------------------------------
         // Properties
         // --------------------------------------------------
-        public int PopupCount
-        {
-            get
-            {
-                return _popupStack.Count;
-            }
-        }
-
-        public int CanvasOrder
-        {
-            get
-            {
-                return _canvasOrder;
-            }
-        }
+        public int PopupCount => _popupStack.Count;
+        
+        public int CanvasOrder => _canvasOrder;
 
         public GameObject Root
         {
@@ -124,8 +112,8 @@ namespace UI
             else
                 canvas.sortingOrder = 1;
 
-            var setWidth = 1080;
-            var setHeight = 1920;
+            var setWidth = Define.CANVAS_WIDTH;
+            var setHeight = Define.CANVAS_HIGHT;
             var deviceWidth = Screen.width;
             var deviceHeight = Screen.height;
 
@@ -141,9 +129,9 @@ namespace UI
             if (string.IsNullOrEmpty(name))
                 name = typeof(T).Name;
 
-            Systems.Resource.LoadAsync<GameObject>($"Prefabs/UI/Popups/UI_{name}.prefab", Define.ELoadType.Global, (obj) =>
+            Owner.Resource.LoadAsync<GameObject>($"{Define.RESOURCE_POPUP_PATH}UI_{name}.prefab", Define.ELoadType.Global, (obj) =>
             {
-                GameObject go = Systems.Resource.Instantiate($"Prefabs/UI/Popups/UI_{name}.prefab");
+                GameObject go = Owner.Resource.Instantiate($"{Define.RESOURCE_POPUP_PATH}UI_{name}.prefab");
 
                 if (go != null)
                 {
@@ -185,9 +173,9 @@ namespace UI
             if (string.IsNullOrEmpty(name))
                 name = typeof(T).Name;
 
-            Systems.Resource.LoadAsync<GameObject>($"Prefabs/UI/Scenes/{name}.prefab", Define.ELoadType.Global, (obj) =>
+            Owner.Resource.LoadAsync<GameObject>($"{Define.RESOURCE_SCENE_PATH}{name}.prefab", Define.ELoadType.Global, (obj) =>
             {
-                GameObject go = Systems.Resource.Instantiate($"Prefabs/UI/Scenes/{name}.prefab");
+                GameObject go = Owner.Resource.Instantiate($"{Define.RESOURCE_SCENE_PATH}{name}.prefab");
 
                 if (go != null)
                 {
