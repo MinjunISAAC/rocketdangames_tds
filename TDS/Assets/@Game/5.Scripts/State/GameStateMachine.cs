@@ -10,7 +10,7 @@ using Core;
 
 namespace Game
 {
-    public class GameStateMachine : SimpleStateMachine<EStateType>
+    public class GameStateMachine : SimpleStateMachine<Define.EStateType>
     {
         // --------------------------------------------------
         // Singleton
@@ -29,7 +29,7 @@ namespace Game
                 if (null == _instance)
                 {
                     _instance = new GameStateMachine();
-                    _instance._InitSingleton();
+                    _instance.InitSingleton();
                 }
 
                 return _instance;
@@ -39,7 +39,7 @@ namespace Game
         // --------------------------------------------------
         // Properties
         // --------------------------------------------------
-        public override EStateType CurrentState
+        public override Define.EStateType CurrentState
         {
             get
             {
@@ -51,22 +51,22 @@ namespace Game
         // Functions - Nomal
         // --------------------------------------------------
         private class CoroutineExecoutor : MonoBehaviour { }
-        private void _InitSingleton()
+        private void InitSingleton()
         {
             OnInit
             (
-                new Dictionary<EStateType, SimpleState<EStateType>>()
+                new Dictionary<Define.EStateType, SimpleState<Define.EStateType>>()
                 {
-                    { EStateType.Ready, new State_Ready() },
-                    { EStateType.Play, new State_Play() },
-                    { EStateType.Success, new State_Success() },
-                    { EStateType.Fail, new State_Fail() },
-                    { EStateType.Pause, new State_Pause() },
+                    { Define.EStateType.Ready, new State_Ready() },
+                    { Define.EStateType.Play, new State_Play() },
+                    { Define.EStateType.Success, new State_Success() },
+                    { Define.EStateType.Fail, new State_Fail() },
+                    { Define.EStateType.Pause, new State_Pause() },
                 },
                 null
             );
 
-            ChangeState(EStateType.Ready);
+            ChangeState(Define.EStateType.Ready);
         }
     }
 }

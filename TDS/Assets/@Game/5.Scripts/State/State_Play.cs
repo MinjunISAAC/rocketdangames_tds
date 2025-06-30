@@ -10,17 +10,17 @@ using Core;
 
 namespace Game 
 {
-    public class State_Play : SimpleState<EStateType>
+    public class State_Play : SimpleState<Define.EStateType>
     {
         // --------------------------------------------------
         // Property
         // --------------------------------------------------
-        public override EStateType State => EStateType.Play;
+        public override Define.EStateType State => Define.EStateType.Play;
 
         // --------------------------------------------------
         // Functions - Nomal
         // --------------------------------------------------
-        protected override void _Start(EStateType preStateKey, object startParam)
+        protected override void _Start(Define.EStateType preStateKey, object startParam)
         {
             Debug.Log($"[State_{GameStateMachine.Instance.CurrentState}._Start] {GameStateMachine.Instance.CurrentState} State에 진입하였습니다.");
         }
@@ -30,7 +30,7 @@ namespace Game
         
         }
 
-        protected override void _Finish(EStateType nextStateKey)
+        protected override void _Finish(Define.EStateType nextStateKey)
         {
             Debug.Log($"[State_{GameStateMachine.Instance.CurrentState}._Finish] {GameStateMachine.Instance.CurrentState} State에서 빠져나왔습니다.");
         }
