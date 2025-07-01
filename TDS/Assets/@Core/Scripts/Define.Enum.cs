@@ -2,7 +2,7 @@ namespace Core
 {
     public static partial class Define
     {
-        #region [Resource]
+        #region [Scene]
         public enum ESceneType
         {
             Unknown = 0,
@@ -44,6 +44,17 @@ namespace Core
             Right_Left = 6,
             Top_Bottom = 7,
             Bottom_Top = 8,
+        }
+        #endregion
+
+        #region [Unit]
+        public enum EUnitType
+        {
+            Unknown = 0,
+            Type_0 = 1,
+            Type_1 = 2,
+            Type_2 = 3,
+            Type_3 = 4,
         }
         #endregion
     }

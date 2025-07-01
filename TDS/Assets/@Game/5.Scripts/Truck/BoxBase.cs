@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 // ----- Unity
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game
 {
@@ -25,6 +26,7 @@ namespace Game
         [Space(1.5f)]
         [Header("3. 고유 능력 옵션")]
         [SerializeField] private float _hpMax = 1000f;
+        [SerializeField] private Slider _hpSlider = null;
 
         // --------------------------------------------------
         // Variables
@@ -33,7 +35,14 @@ namespace Game
         private Material _whiteEffectMaterial = null;
         private Coroutine _whiteEffectCoroutine = null;
 
-        private float _hpCurrent = 0f;
+        [SerializeField] private float _hpCurrent = 0f;
+
+        // --------------------------------------------------
+        // Properties
+        // --------------------------------------------------
+        public float HpCurrent => _hpCurrent;
+        public float HpMax => _hpMax;
+        public bool IsAlive => _hpCurrent > 0f;
 
         // --------------------------------------------------
         // Methods - Event
@@ -41,6 +50,7 @@ namespace Game
         private void Awake()
         {
             InitializeComponents();
+            InitializeHp();
         }
 
         private void OnDestroy()
@@ -51,8 +61,6 @@ namespace Game
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-                OnHit();
         }
         
         // --------------------------------------------------
@@ -67,8 +75,34 @@ namespace Game
             }
         }
         
-        public void OnHit()
+        private void InitializeHp()
         {
+            _hpCurrent = _hpMax;
+            InitializeHpSlider();
+        }
+        
+        private void InitializeHpSlider()
+        {
+            if (_hpSlider != null)
+            {
+                _hpSlider.maxValue = _hpMax;
+                _hpSlider.value = _hpCurrent;
+                UpdateHpSliderVisibility();
+            }
+        }
+        
+        public void Hit(float damage)
+        {
+            if (!IsAlive) return;
+            
+            // HP 감소
+            _hpCurrent -= damage;
+            Debug.Log($"[{gameObject.name}] Hit! -{damage} damage. HP: {_hpCurrent:F1}/{_hpMax:F1}");
+            
+            // HP 슬라이더 업데이트
+            UpdateHpSlider();
+            
+            // 공격 효과 표시
             if (_spriteRenderer != null && _whiteEffectMaterial != null)
             {
                 if (_whiteEffectCoroutine != null)
@@ -76,7 +110,50 @@ namespace Game
                 
                 _whiteEffectCoroutine = StartCoroutine(Co_WhiteEffect());
             }
+            
+            if (_hpCurrent <= 0f)
+                OnDestroyed();
         }
+        
+        private void OnDestroyed()
+        {
+            Debug.Log($"[{gameObject.name}] Destroyed!");
+            
+            // 파괴 효과나 다른 로직이 필요하면 여기에 추가
+            
+            // 오브젝트 파괴
+            Destroy(gameObject);
+        }
+        
+        private void UpdateHpSlider()
+        {
+            if (_hpSlider != null)
+            {
+                _hpSlider.value = _hpCurrent;
+                UpdateHpSliderVisibility();
+            }
+        }
+        
+        private void UpdateHpSliderVisibility()
+        {
+            if (_hpSlider != null)
+            {
+                // HP가 0이거나 최대값과 같으면 슬라이더 비활성화
+                bool shouldShow = _hpCurrent > 0f && _hpCurrent < _hpMax;
+                _hpSlider.gameObject.SetActive(shouldShow);
+                
+                if (shouldShow)
+                {
+                    Debug.Log($"[{gameObject.name}] HP 슬라이더 활성화 - HP: {_hpCurrent:F1}/{_hpMax:F1}");
+                }
+                else
+                {
+                    Debug.Log($"[{gameObject.name}] HP 슬라이더 비활성화 - HP: {_hpCurrent:F1}/{_hpMax:F1}");
+                }
+            }
+        }
+        
+
         
         // --------------------------------------------------
         // Methods - Coroutines
@@ -114,6 +191,5 @@ namespace Game
             _whiteEffectMaterial.SetFloat("_WhiteAmount", endValue);
             doneCallBack?.Invoke();
         }
-        
     }
 }
